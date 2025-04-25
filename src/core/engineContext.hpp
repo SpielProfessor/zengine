@@ -1,3 +1,4 @@
+#include "core.hpp"
 #include "scene.hpp"
 #pragma once
 //
@@ -14,7 +15,6 @@ private:
   bool running;
   // initialize flags
   void loadFlags();
-  std::vector<Scene *> scenes;
 
 public:
   //
@@ -36,7 +36,7 @@ public:
   //
   // RUNTIME ELEMENTS
   //
-  Scene *currentScene;
+  Unique(Scene) currentScene;
 
   //
   // CONSTRUCTORS
@@ -50,11 +50,11 @@ public:
 
   // start the main graphics loop of the application
   void run();
-  // add a scene to the scene index
-  void addScene(int id, Scene *scene);
-  // run a specific scene with the given index
-  void activateScene(int id);
   void setLetterbox(int vWidth, int vHeight);
   void setFlag(EngineContextFlag flag);
   void unsetFlag(EngineContextFlag flag);
+  template <typename T, typename... Args> void switchTo(Args &&...args) {
+    static_assert(std::is_base_of<Scene, T>::value, "T must be a Scene");
+    currentScene = std::make_unique<T>(std::forward<Args>(args)...);
+  }
 };

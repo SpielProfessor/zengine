@@ -11,8 +11,8 @@ public:
   int zindex;
   virtual void initialize() {};
   virtual void draw() {};
-  virtual void fixedUpdate(float delta) {};
-  virtual void update(float delta) {};
+  virtual void fixedUpdate(float delta [[maybe_unused]]) {};
+  virtual void update(float delta [[maybe_unused]]) {};
   // background draw function
   virtual void _draw();
   // background update function

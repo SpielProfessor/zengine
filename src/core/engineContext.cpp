@@ -1,4 +1,5 @@
 #include "engineContext.hpp"
+#include "../defaultElements/texture.hpp"
 #include "raylib.h"
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -23,6 +24,7 @@ EngineContext::EngineContext(const char *title_, int width_, int height_,
 void EngineContext::run() {
   // initialization
   InitWindow(width, height, title);
+  loadTextures();
   float accumulator = 0.0f;
   currentScene->initialize();
   RenderTexture2D target = LoadRenderTexture(vWidth, vHeight);
@@ -82,7 +84,5 @@ void EngineContext::setLetterbox(int vWidth_, int vHeight_) {
   vHeight = vHeight_;
   setFlag(ENABLE_LETTERBOX);
 }
-void EngineContext::addScene(int id, Scene *scene) { scenes.push_back(scene); }
-void EngineContext::activateScene(int id) { currentScene = scenes[id]; }
 void EngineContext::setFlag(EngineContextFlag flag) { flags = flags | flag; }
 void EngineContext::unsetFlag(EngineContextFlag flag) { flags = flags & ~flag; }

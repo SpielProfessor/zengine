@@ -3,23 +3,12 @@
 //
 // TESTING
 //
-class Circle : public Actor {
-public:
-  Circle() { position = Vector2{10, 10}; }
-  void draw() override {
-    DrawCircle((int)getGlobalX(), (int)getGlobalY(), 20, WHITE);
-  }
-};
 
 class Player : public Sprite {
 public:
-  Player() : Sprite("assets/forest.png") {
+  Player() : Sprite("TEX_TILESET") {
     setScale(3);
     position = Vector2{10, 10};
-    addChild(NewUnique(Circle));
-  }
-  void draw() override {
-    DrawRectangle((int)getGlobalX(), (int)getGlobalY(), 70, 80, WHITE);
   }
   void fixedUpdate(float delta) override {
     if (IsKeyDown(KEY_A)) {
@@ -43,8 +32,9 @@ public:
   }
 };
 int main() {
+  initializeTexture("TEX_TILESET", "set.png");
   EngineContext ctx("Hello there", 800, 450);
   ctx.setLetterbox(400, 225);
-  ctx.currentScene = new MainScene;
+  ctx.switchTo<MainScene>();
   ctx.run();
 }

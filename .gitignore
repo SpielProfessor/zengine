@@ -1,0 +1,21 @@
+# Ignore build and object files
+/build/
+bin/
+
+# Ignore specific object files
+*.o
+
+# Ignore the static library file
+libzEngine.a
+
+# Ignore Makefile backup files
+Makefile.old
+
+# Ignore IDE files (for VSCode and other editors)
+.vscode/
+.idea/
+
+# Ignore system files (for macOS, Windows, Linux)
+.DS_Store
+Thumbs.db
+

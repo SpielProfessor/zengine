@@ -3,12 +3,17 @@
 #include "algorithm"
 #include <raylib.h>
 // constructors
-Actor::Actor() : children(), zindex(0), position(Vector2{0, 0}) {}
+Actor::Actor()
+    : children(), position(Vector2{0, 0}), parent(nullptr), zindex(0) {}
+
 Actor::Actor(int zindex_)
-    : children(), zindex(zindex_), position(Vector2{0, 0}) {}
-Actor::Actor(Vector2 position_) : children(), zindex(0), position(position_) {}
+    : children(), position(Vector2{0, 0}), parent(nullptr), zindex(zindex_) {}
+
+Actor::Actor(Vector2 position_)
+    : children(), position(position_), parent(nullptr), zindex(0) {}
+
 Actor::Actor(int zindex_, Vector2 position_)
-    : children(), zindex(zindex_), position(position_) {}
+    : children(), position(position_), parent(nullptr), zindex(zindex_) {}
 
 void Actor::_draw() {
   sortActorsByZIndex(children);

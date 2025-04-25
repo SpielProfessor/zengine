@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Iinclude -Isrc -lraylib
+CXXFLAGS = -std=c++17 -Wall -Wextra  -Iinclude -Isrc -lraylib
 
 SRCDIR = src
 BUILDDIR = build
