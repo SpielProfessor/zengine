@@ -10,7 +10,7 @@ public:
     setScale(3);
     position = Vector2{10, 10};
   }
-  void fixedUpdate(float delta) override {
+  void fixedUpdate(float delta [[maybe_unused]]) override {
     if (IsKeyDown(KEY_A)) {
       position.x -= 10;
     } else if (IsKeyDown(KEY_D)) {
@@ -32,7 +32,7 @@ public:
   }
 };
 int main() {
-  initializeTexture("TEX_TILESET", "set.png");
+  initializeTexture("TEX_TILESET", "../set.png");
   EngineContext ctx("Hello there", 800, 450);
   ctx.setLetterbox(400, 225);
   ctx.switchTo<MainScene>();

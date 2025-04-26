@@ -1,9 +1,7 @@
 #include <raylib.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <unordered_map>
-#include <vector>
 #pragma once
 
 class TextureObject {
@@ -20,5 +18,6 @@ public:
 };
 void initializeTexture(std::string id, std::string path);
 void loadTextures();
+void unloadTextures();
 
 extern std::unordered_map<std::string, TextureObject> TEXTURE_INDEX;

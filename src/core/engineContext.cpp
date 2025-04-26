@@ -1,6 +1,6 @@
 #include "engineContext.hpp"
-#include "../defaultElements/texture.hpp"
 #include "raylib.h"
+#include "texture.hpp"
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
@@ -77,6 +77,7 @@ void EngineContext::run() {
   }
   // cleanup
   UnloadRenderTexture(target);
+  unloadTextures();
   CloseWindow();
 }
 void EngineContext::setLetterbox(int vWidth_, int vHeight_) {
