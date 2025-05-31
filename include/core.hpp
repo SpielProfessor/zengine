@@ -1,0 +1,5 @@
+#include "../src/actor/actor.hpp"
+#include "../src/core/core.hpp"
+#include "../src/core/engineContext.hpp"
+#include "../src/core/scene.hpp"
+#include "../src/core/texture.hpp"

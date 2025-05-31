@@ -1,4 +1,5 @@
 #include "texture.hpp"
+#include "../FEATURES.hpp"
 #include <raylib.h>
 #include <stdio.h>
 #include <string>
@@ -19,8 +20,12 @@ Texture2D TextureObject::getTexture() {
   return texture;
 }
 void unloadTextures() {
+#ifdef _ZENGINE_DEBUG
+  puts("Unloading assets");
+#endif
+  // unload everything
   for (auto pair : TEXTURE_INDEX) {
-    if (IsTextureReady(pair.second.texture)) {
+    if (IsTextureValid(pair.second.texture)) {
       UnloadTexture(pair.second.texture);
     }
   }
@@ -28,12 +33,32 @@ void unloadTextures() {
 
 void initializeTexture(std::string id, std::string path) {
   TEXTURE_INDEX[id] = TextureObject(path);
-  printf("Initializing %s\n", id.c_str());
 }
 void loadTextures() {
+#ifdef _ZENGINE_DEBUG
+  puts("Loading assets");
+#endif
   for (auto &pair : TEXTURE_INDEX) {
     pair.second.build();
-    printf("Building %s\n", pair.first.c_str());
-    printf("ID: %d\n", pair.second.texture.id);
   }
+#ifdef _ZENGINE_DEBUG
+  puts("Finished loading assets");
+#endif
+}
+
+void textureLoadingScreen() {
+  // draw loading screen
+#ifdef LOADING_SCREEN_FN
+  LOADING_SCREEN_FN();
+#else
+
+  BeginDrawing();
+  {
+    int fontSize = 20;
+    const char *draw = "zengine";
+    DrawText("ZEngine", GetScreenWidth() / 2 - MeasureText(draw, fontSize) / 2,
+             GetScreenHeight() - fontSize - 20, fontSize, WHITE);
+  }
+  EndDrawing();
+#endif
 }

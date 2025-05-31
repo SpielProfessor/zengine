@@ -1,6 +1,9 @@
+#include <atomic>
+#include <optional>
 #include <raylib.h>
 #include <stdlib.h>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #pragma once
 
@@ -19,5 +22,6 @@ public:
 void initializeTexture(std::string id, std::string path);
 void loadTextures();
 void unloadTextures();
+void textureLoadingScreen();
 
 extern std::unordered_map<std::string, TextureObject> TEXTURE_INDEX;

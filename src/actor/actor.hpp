@@ -3,39 +3,51 @@
 #include "../core/core.hpp"
 #include <raylib.h>
 #include <vector>
+
+class Scene;
 class Actor {
 public:
   std::vector<Unique(Actor)> children;
+
   Vector2 position;
+  Vector2 dimensions;
   Actor *parent = nullptr;
+  Scene *sceneLink = nullptr;
   int zindex;
+  bool destroyed;
   // constructors with custom children
   Actor(std::vector<Unique(Actor)> children_)
       : children(std::move(children_)), position(Vector2{0, 0}),
-        parent(nullptr), zindex(0) {}
+        parent(nullptr), zindex(0), id(generateID()) {}
 
   Actor(std::vector<Unique(Actor)> children_, int zindex_)
       : children(std::move(children_)), position(Vector2{0, 0}),
-        parent(nullptr), zindex(zindex_) {}
+        parent(nullptr), zindex(zindex_), id(generateID()) {}
 
   Actor(std::vector<Unique(Actor)> children_, Vector2 position_)
       : children(std::move(children_)), position(position_), parent(nullptr),
-        zindex(0) {}
+        zindex(0), id(generateID()) {}
 
   Actor(std::vector<Unique(Actor)> children_, int zindex_, Vector2 position_)
       : children(std::move(children_)), position(position_), parent(nullptr),
-        zindex(zindex_) {}
+        zindex(zindex_), id(generateID()) {}
   // constructors without custom children
-  Actor() : children(), position(Vector2{0, 0}), parent(nullptr), zindex(0) {}
+  Actor()
+      : children(), position(Vector2{0, 0}), parent(nullptr), zindex(0),
+        id(generateID()) {}
 
   Actor(int zindex_)
-      : children(), position(Vector2{0, 0}), parent(nullptr), zindex(zindex_) {}
+      : children(), position(Vector2{0, 0}), parent(nullptr), zindex(zindex_),
+        id(generateID()) {}
 
   Actor(Vector2 position_)
-      : children(), position(position_), parent(nullptr), zindex(0) {}
+      : children(), position(position_), parent(nullptr), zindex(0),
+        id(generateID()) {}
 
   Actor(int zindex_, Vector2 position_)
-      : children(), position(position_), parent(nullptr), zindex(zindex_) {}
+      : children(), position(position_), parent(nullptr), zindex(zindex_),
+        id(generateID()) {}
+  void destroy();
 
   // functions intended for overwriting
   // called when the actor is initialized
@@ -63,6 +75,24 @@ public:
   // get the global Y coordinate of the object
   float getGlobalY();
   // add a child to the actor
-  void addChild(Unique(Actor) child);
+  Actor *addChild(Unique(Actor) child);
+  template <typename T> T *findChildOfType() {
+    for (auto &child : children) {
+      if (T *casted = dynamic_cast<T *>(child.get())) {
+        return casted;
+      }
+    }
+    return nullptr;
+  }
+  int getID() const { return id; }
+
+private:
+  static int nextID; // Static variable to generate unique IDs
+  int id;
+  int value;
+
+  static int generateID() { return nextID++; }
 };
-void sortActorsByZIndex(std::vector<Unique(Actor)> &elements);
+
+void sortActorsByZIndexU(std::vector<Unique(Actor)> &elements);
+void sortActorsByZIndex(std::vector<Actor *> &elements);

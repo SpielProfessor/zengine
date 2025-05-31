@@ -1,5 +1,6 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Iinclude -Isrc -lraylib
+CXXFLAGS = -std=gnu++20 -Wall -Wextra -Iinclude -Isrc -lraylib -O0 -g
+CXXFLAGS_RELEASE = -std=gnu++20 -Wall -Wextra -Iinclude -Isrc -lraylib -O3
 
 SRCDIR = src
 BUILDDIR = build
@@ -7,7 +8,7 @@ BINDIR = bin
 EXAMPLEDIR = examples
 
 LIB = libzEngine.a
-EXE = $(BINDIR)/example
+EXE = $(BINDIR)/example $(BINDIR)/exampleTilemap $(BINDIR)/exampleTilemapLayer $(BINDIR)/exampleAnimatedSprite
 
 # Find all .cpp files under src/
 SRC_FILES := $(shell find $(SRCDIR) -name "*.cpp")
@@ -27,7 +28,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Compile the example using the static library
-$(EXE): $(EXAMPLEDIR)/main.cpp $(LIB)
+$(BINDIR)/%: $(EXAMPLEDIR)/%.cpp $(LIB)
 	@mkdir -p $(BINDIR)
 	$(CXX) $(CXXFLAGS) $< -L. -lzEngine -o $@
 

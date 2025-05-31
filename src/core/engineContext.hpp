@@ -1,5 +1,7 @@
 #include "core.hpp"
 #include "scene.hpp"
+#include "zDebug.hpp"
+#include <raylib.h>
 #pragma once
 //
 // ENGINE CONTEXT
@@ -8,6 +10,7 @@ typedef enum {
   FLAG_NONE = 0,
   CLOSE_ON_ESC = 1 << 0,
   ENABLE_LETTERBOX = 1 << 1,
+  DISABLE_RESIZE = 1 << 2,
 } EngineContextFlag;
 // setup system for windows etc.
 class EngineContext {
@@ -33,6 +36,13 @@ public:
   int vWidth = 0;
   int vHeight = 0;
 
+  // debug mode
+  bool debugMode = false;
+  DebugManager debugManager;
+
+  // Camera
+
+  Camera2D camera = {0, 0, 0, 0, 0, 0};
   //
   // RUNTIME ELEMENTS
   //
@@ -56,5 +66,6 @@ public:
   template <typename T, typename... Args> void switchTo(Args &&...args) {
     static_assert(std::is_base_of<Scene, T>::value, "T must be a Scene");
     currentScene = std::make_unique<T>(std::forward<Args>(args)...);
+    currentScene->ctxLink = this;
   }
 };
