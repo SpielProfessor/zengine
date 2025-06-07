@@ -9,12 +9,13 @@ class Actor {
 public:
   std::vector<Unique(Actor)> children;
 
-  Vector2 position;
-  Vector2 dimensions;
+  Vector2 position = Vector2{0., 0.};
+  Vector2 dimensions = Vector2{0., 0.};
   Actor *parent = nullptr;
   Scene *sceneLink = nullptr;
-  int zindex;
-  bool destroyed;
+  int zindex = 0;
+  bool destroyed = false;
+  bool initialized = false;
   // constructors with custom children
   Actor(std::vector<Unique(Actor)> children_)
       : children(std::move(children_)), position(Vector2{0, 0}),

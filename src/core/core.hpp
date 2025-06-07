@@ -27,6 +27,6 @@ inline Vector2 vectorNormalize(Vector2 v) {
   return {v.x / len, v.y / len};
 }
 
-#define ZENGINE_VERSION "0.3a"
+#define ZENGINE_VERSION "0.3b"
 #define BUILD_DATE __DATE__
 #define BUILD_TIME __TIME__

@@ -34,6 +34,7 @@ void Actor::_initialize() {
     printf("|-initializing actor %d and children\n", getID());
   }
 #endif
+  initialized = true;
   initialize();
   for (auto &child : children) {
     child->_initialize();
@@ -51,6 +52,9 @@ Actor *Actor::addChild(Unique(Actor) child) {
     sceneLink->allActors.push_back(raw);
   } else {
     puts("[ZENGINE::ERROR::ACTOR] sceneLink inaccessible");
+  }
+  if (initialized) {
+    raw->_initialize();
   }
   return raw; // return raw pointer
 }
