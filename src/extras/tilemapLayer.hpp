@@ -63,7 +63,8 @@ public:
   }
   std::vector<Rectangle> getSize() override {
     std::vector<Rectangle> returned;
-    // draw a tilemap layer (optimized - based on the camera)
+
+    // get collision based on the screen
     int startY, startX, endY, endX;
     int tileX = this->sceneLink->ctxLink->camera.target.x / tileSize;
     int tileY = this->sceneLink->ctxLink->camera.target.y / tileSize;
@@ -71,10 +72,11 @@ public:
     int screen_w = (float)screenWidth / this->sceneLink->ctxLink->camera.zoom;
 
     // -1 and +3 for padding
-    startY = tileY - (screen_h / 2) / tileSize - 1;
-    startX = tileX - (screen_w / 2) / tileSize - 1;
-    endY = startY + screen_h / tileSize + 3;
-    endX = startX + screen_w / tileSize + 3;
+    startY = tileY;
+    startX = tileX;
+    endY = startY + (screen_h) / tileSize + 3;
+    endX = startX + (screen_w) / tileSize + 3;
+
     if (endX > width) {
       endX -= endX - width;
     }
@@ -87,6 +89,7 @@ public:
     if (startY < 0) {
       startY = 0;
     }
+
     for (int y = startY; y < endY; y++) {
       for (int x = startX; x < endX; x++) {
         if (tileTypes.tileIndex[tilemap[y][x]].isCollidable) {
@@ -95,6 +98,7 @@ public:
         }
       }
     }
+
     return returned;
   }
 };
