@@ -15,7 +15,8 @@ typedef enum {
 // setup system for windows etc.
 class EngineContext {
 private:
-  bool running;
+  bool running = false;
+  bool toSwitch = false;
   // initialize flags
   void loadFlags();
 
@@ -47,6 +48,7 @@ public:
   // RUNTIME ELEMENTS
   //
   Unique(Scene) currentScene;
+  Unique(Scene) nextScene = 0;
 
   //
   // CONSTRUCTORS
@@ -63,6 +65,12 @@ public:
   void setLetterbox(int vWidth, int vHeight);
   void setFlag(EngineContextFlag flag);
   void unsetFlag(EngineContextFlag flag);
+  template <typename T, typename... Args> void trySwitch(Args &&...args) {
+    toSwitch = true;
+    static_assert(std::is_base_of<Scene, T>::value, "T must be a Scene");
+    nextScene = std::make_unique<T>(std::forward<Args>(args)...);
+    nextScene->ctxLink = this;
+  }
   template <typename T, typename... Args> void switchTo(Args &&...args) {
     static_assert(std::is_base_of<Scene, T>::value, "T must be a Scene");
     currentScene = std::make_unique<T>(std::forward<Args>(args)...);

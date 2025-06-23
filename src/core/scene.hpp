@@ -24,6 +24,7 @@ public:
   Scene(int interval = 60);
   void initialize();
   void addActor(Unique(Actor) actor);
+  virtual void initializeCustom() {}
   virtual void update(float delta);
   virtual void fixedUpdate(float delta);
   virtual void draw();

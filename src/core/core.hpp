@@ -26,6 +26,8 @@ inline Vector2 vectorNormalize(Vector2 v) {
     return {0.0f, 0.0f};
   return {v.x / len, v.y / len};
 }
+Vector2 GetVirtualMousePosition(int screenWidth, int screenHeight,
+                                int virtualWidth, int virtualHeight);
 
 #define ZENGINE_VERSION "0.3b"
 #define BUILD_DATE __DATE__

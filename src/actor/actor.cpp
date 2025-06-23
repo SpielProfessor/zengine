@@ -15,6 +15,10 @@ void Actor::_draw() {
 void Actor::destroy() {
   this->destroyed = true;
   this->sceneLink->dirtyDelete = true;
+  for (auto &child : this->children) {
+    child->destroy();
+  }
+  children.clear();
 }
 void Actor::_fixedUpdate(float delta) {
   fixedUpdate(delta);

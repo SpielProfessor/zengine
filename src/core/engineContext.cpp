@@ -1,10 +1,12 @@
 #include "engineContext.hpp"
 #include "../FEATURES.hpp"
 #include "core.hpp"
+#include "defaultDebugCommands.hpp"
 #include "raylib.h"
 #include "texture.hpp"
 #include "zDebug.hpp"
 #include <cstdio>
+#include <vector>
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
@@ -21,8 +23,8 @@ void EngineContext::loadFlags() {
 }
 EngineContext::EngineContext(const char *title_, int width_, int height_,
                              int flags_)
-    : running(true), title((char *)title_), width(width_), height(height_),
-      flags(flags_), debugManager() {
+    : running(false), title((char *)title_), width(width_), height(height_),
+      flags(flags_) {
   printf("------ ZEngine version %s ------\n", ZENGINE_VERSION);
   printf("Built on %s at %s\n", BUILD_DATE, BUILD_TIME);
   printf("\nCompile-time features:\n");
@@ -40,10 +42,14 @@ EngineContext::EngineContext(const char *title_, int width_, int height_,
   camera.offset = (Vector2){(float)GetScreenWidth(), (float)GetScreenHeight()};
   camera.rotation = 0.0f;
   camera.zoom = 1.0f;
+  addDefaultDebugFeatures(&this->debugManager);
 
   loadFlags();
 }
+
 void EngineContext::run() {
+  debugManager.finish_init();
+  running = true;
   // begin execution
 #ifdef _ZENGINE_DEBUG
   puts("[ZENGINE::DEBUG::EngineContext] starting EngineContext running");
@@ -120,6 +126,12 @@ void EngineContext::run() {
         BeginMode2D(camera);
         currentScene->draw();
         EndMode2D();
+        // debugging
+        if (this->debugMode || this->debugManager.alwaysDraw) {
+          for (auto &feature : debugManager.debugFeatures) {
+            feature->draw(this);
+          }
+        }
         // HUD
         currentScene->drawHud();
       }
@@ -141,6 +153,12 @@ void EngineContext::run() {
         debugManager.draw();
       }
       EndDrawing();
+    }
+    if (toSwitch && currentScene != 0) {
+      this->currentScene = std::move(this->nextScene);
+      this->nextScene = 0;
+      toSwitch = false;
+      currentScene->initialize();
     }
   }
   // cleanup

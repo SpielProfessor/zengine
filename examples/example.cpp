@@ -66,7 +66,9 @@ int main() {
   initializeTexture("TEX_TILESET", "../set.png");
 
   EngineContext ctx("Hello there", 800, 450);
+  addColliderDebugIntegration(&ctx);
   ctx.setLetterbox(400, 225);
   ctx.switchTo<MainScene>();
+
   ctx.run();
 }

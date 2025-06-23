@@ -18,7 +18,9 @@ void Scene::update(float delta) {
 }
 void Scene::fixedUpdate(float delta) {
   for (auto &actor : elements) {
-    actor->_fixedUpdate(delta);
+    if (!actor->destroyed) {
+      actor->_fixedUpdate(delta);
+    }
   }
 }
 float Scene::getUpdateInterval() { return 1.0f / updateInterval; }
@@ -36,6 +38,7 @@ void Scene::initialize() {
     actor->_initialize();
   }
   initialized = true;
+  initializeCustom();
 #ifdef _ZENGINE_DEBUG_INIT
   puts("|----------------------------------------------------------------|");
   puts("|[ZENGINE::DEBUG::SCENE] Finished initializing scenes and objects|");
