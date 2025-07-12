@@ -1,10 +1,19 @@
+/********************************************
+ * ACTOR.HPP                                *
+ ********************************************
+ *The actor, core of the zengine's structure*
+ *                                          *
+ * Copyright (C) SpielProfessor 2025.       *
+ * Licensed under the 2-Clause BSD license  *
+ ********************************************/
 #pragma once
-// an actor that has the ability to draw and update
 #include "../core/core.hpp"
 #include <raylib.h>
 #include <vector>
 
 class Scene;
+
+// an actor, with the ability to draw and update
 class Actor {
 public:
   std::vector<Unique(Actor)> children;
@@ -85,14 +94,17 @@ public:
     }
     return nullptr;
   }
+
+  // get the identifier of this actor
   int getID() const { return id; }
 
 private:
-  static int nextID; // Static variable to generate unique IDs
+  static int nextID; // Static variable to obtain unique IDs
   int id;
   int value;
 
   static int generateID() { return nextID++; }
+  void resetNextID() { nextID = 0; }
 };
 
 void sortActorsByZIndexU(std::vector<Unique(Actor)> &elements);
